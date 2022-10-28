@@ -7,7 +7,6 @@ using Windows.UI.Notifications.Management;
 using TheKey_v2;
 using TheKey_v2.Enum;
 using Timer = System.Timers.Timer;
-using System;
 
 // GET Keyboard
 var d = new Keyboard();
@@ -16,7 +15,7 @@ var d = new Keyboard();
 var listener = UserNotificationListener.Current;
 
 // Check call function every 1s
-var timer = new Timer(1000);
+var timer = new Timer(2000);
 timer.Elapsed += ProcessCheck;
 timer.Start();
 timer.Enabled = true;
@@ -28,7 +27,6 @@ async void ProcessCheck(object source, ElapsedEventArgs e)
     /**
      * Check VS is in debug mode
      */
-    Debug.WriteLine("Checking for process");
     // Get All process of VISUAL STUDIO
     var processesVs = Process.GetProcessesByName("devenv");
     // Test if process is debug
@@ -59,4 +57,7 @@ async void ProcessCheck(object source, ElapsedEventArgs e)
 }
 
 // Keep process run
-while (true) Task.Delay(10000);
+while (true)
+{
+    Task.Delay(Int32.MaxValue);
+}
