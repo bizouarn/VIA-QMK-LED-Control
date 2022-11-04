@@ -1,7 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System.Diagnostics;
-using System.Timers;
 using Windows.UI.Notifications;
 using Windows.UI.Notifications.Management;
 using TheKey_v2;
@@ -16,13 +15,12 @@ var listener = UserNotificationListener.Current;
 
 // Check call function every 1s
 var timer = new Timer(2000);
-timer.Elapsed += ProcessCheck;
 timer.Start();
 timer.Enabled = true;
 
 
 // Check function
-async void ProcessCheck(object source, ElapsedEventArgs e)
+async Task ProcessCheck()
 {
     /**
      * Check VS is in debug mode
@@ -34,6 +32,7 @@ async void ProcessCheck(object source, ElapsedEventArgs e)
         // Set light mode to rainbow
         if (processesVs.Any(p => p.MainWindowTitle.Contains("(D") || p.MainWindowTitle.Contains("(E")))
         {
+            Debug.WriteLine("Set debug mode");
             d.SetLightColor(20, 100);
             d.SetLightMode(LightMode.Breathing4);
             return;
@@ -43,15 +42,22 @@ async void ProcessCheck(object source, ElapsedEventArgs e)
      * If notification
      */
     var notification = await listener.GetNotificationsAsync(NotificationKinds.Toast);
-    foreach(var _ in notification)
+    foreach (var _ in notification)
     {
-        d.SetLightColor(207, 100);
-        return;
+        var current = DateTime.Now;
+        var nDate = _.CreationTime;
+        if (nDate.Day == current.Day && nDate.Hour == current.Hour && nDate.Minute == current.Minute)
+        {
+            Debug.WriteLine("Set normal mode");
+            d.SetLightColor(207, 100);
+            return;
+        }
     }
 
     /**
      * Set normal mode
      */
+    Debug.WriteLine("Set normal mode");
     d.SetLightColor(0, 10);
     d.SetLightMode(LightMode.Solid);
 }
@@ -59,5 +65,6 @@ async void ProcessCheck(object source, ElapsedEventArgs e)
 // Keep process run
 while (true)
 {
-    Task.Delay(Int32.MaxValue);
+    await ProcessCheck();
+    await Task.Delay(1000);
 }
