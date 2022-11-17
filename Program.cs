@@ -34,7 +34,6 @@ async Task ProcessCheck()
         {
             Debug.WriteLine("Set debug mode");
             d.SetLightColor(20, 100);
-            d.SetLightMode(LightMode.Breathing4);
             return;
         }
 
