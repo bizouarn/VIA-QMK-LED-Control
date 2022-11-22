@@ -1,11 +1,10 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Windows.UI.Notifications;
 using Windows.UI.Notifications.Management;
 using TheKey_v2;
 using TheKey_v2.Enum;
-using Timer = System.Timers.Timer;
+
+const int TIMER_INTERVAL = 1000; // 1 second
 
 // GET Keyboard
 var d = new Keyboard();
@@ -13,19 +12,23 @@ var d = new Keyboard();
 // Win API
 var listener = UserNotificationListener.Current;
 
-// Check call function every 1s
-var timer = new Timer(2000);
-timer.Start();
-timer.Enabled = true;
+////
+// Keep process running
+////
+while (true)
+{
+    await ProcessCheck();
+    await Task.Delay(TIMER_INTERVAL);
+}
 
-
+////
 // Check function
+////
 async Task ProcessCheck()
 {
-    /**
-     * Check VS is in debug mode
-     */
-    // Get All process of VISUAL STUDIO
+    ////
+    // Check VS is in debug mode
+    ////
     var processesVs = Process.GetProcessesByName("devenv");
     // Test if process is debug
     if (processesVs.Length > 0)
@@ -37,9 +40,9 @@ async Task ProcessCheck()
             return;
         }
 
-    /**
-     * If notification
-     */
+    ////
+    // Check iƒ Windows notification
+    ////
     var notification = await listener.GetNotificationsAsync(NotificationKinds.Toast);
     foreach (var _ in notification)
     {
@@ -53,17 +56,10 @@ async Task ProcessCheck()
         }
     }
 
-    /**
-     * Set normal mode
-     */
+    ////
+    // Set normal mode
+    ////
     Debug.WriteLine("Set normal mode");
     d.SetLightColor(0, 10);
     d.SetLightMode(LightMode.Solid);
-}
-
-// Keep process run
-while (true)
-{
-    await ProcessCheck();
-    await Task.Delay(1000);
 }
