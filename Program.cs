@@ -48,11 +48,15 @@ async Task ProcessCheck()
     {
         var current = DateTime.Now;
         var nDate = _.CreationTime;
-        if (nDate.Day == current.Day && nDate.Hour == current.Hour && nDate.Minute == current.Minute)
+        if (nDate.Day == current.Day && nDate.Hour == current.Hour)
         {
-            Debug.WriteLine("Set normal mode");
-            d.SetLightColor(207, 100);
-            return;
+            var diff = current.Subtract(nDate.DateTime);
+            if (diff.TotalSeconds < 60)
+            {
+                Debug.WriteLine("Set notification mode");
+                d.SetLightColor(207, 100);
+                return;
+            }
         }
     }
 
