@@ -8,6 +8,7 @@ const int TIMER_INTERVAL = 1000; // 1 second
 
 // GET Keyboard
 var d = new Keyboard();
+string status = "?";
 
 // Win API
 var listener = UserNotificationListener.Current;
@@ -34,11 +35,7 @@ async Task ProcessCheck()
     if (processesVs.Length > 0)
         // Set light mode to rainbow
         if (processesVs.Any(p => p.MainWindowTitle.Contains("(D") || p.MainWindowTitle.Contains("(E")))
-        {
-            Debug.WriteLine("Set debug mode");
-            d.SetLightColor(20, 100);
-            return;
-        }
+            SetStatus("debug");
 
     ////
     // Check iƒ Windows notification
@@ -51,19 +48,34 @@ async Task ProcessCheck()
         if (nDate.Day == current.Day && nDate.Hour == current.Hour)
         {
             var diff = current.Subtract(nDate.DateTime);
-            if (diff.TotalSeconds < 60)
-            {
-                Debug.WriteLine("Set notification mode");
-                d.SetLightColor(207, 100);
-                return;
-            }
+            if (diff.TotalSeconds < 60) SetStatus("notif");
         }
     }
 
     ////
     // Set normal mode
     ////
-    Debug.WriteLine("Set normal mode");
-    d.SetLightColor(0, 10);
-    d.SetLightMode(LightMode.Solid);
+    SetStatus("");
+}
+
+void SetStatus(string? statusP)
+{
+    if (status == statusP) return;
+    status = statusP;
+    switch (status)
+    {
+        case "debug":
+            Debug.WriteLine("Set debug mode");
+            d.SetLightColor(20, 100);
+            break;
+        case "notif":
+            Debug.WriteLine("Set notification mode");
+            d.SetLightColor(207, 100);
+            break;
+        default:
+            Debug.WriteLine("Set normal mode");
+            d.SetLightColor(0, 10);
+            d.SetLightMode(LightMode.Solid);
+            break;
+    }
 }
