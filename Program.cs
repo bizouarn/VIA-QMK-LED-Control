@@ -27,6 +27,7 @@ while (true)
         Debug.WriteLine(e);
         throw;
     }
+
     await Task.Delay(TIMER_INTERVAL);
 }
 
@@ -42,13 +43,21 @@ async Task ProcessCheck()
     // Test if process is debug
     if (processesVs.Length > 0)
         // Set light mode to rainbow
-        if (processesVs.Any(p =>
-                p.MainWindowTitle.Contains("visual studio", StringComparison.OrdinalIgnoreCase) &&
-                (p.MainWindowTitle.Contains("(D") || p.MainWindowTitle.Contains("(E") ||
-                 p.MainWindowTitle.Contains("(É"))))
+        foreach (var p in processesVs)
         {
-            SetStatus("debug");
-            return;
+            if (!p.MainWindowTitle.Contains("visual studio", StringComparison.OrdinalIgnoreCase)) continue;
+            if (p.MainWindowTitle.Contains("(D"))
+            {
+                SetStatus("debugB");
+                return;
+            }
+
+            if (p.MainWindowTitle.Contains("(E") ||
+                p.MainWindowTitle.Contains("(É"))
+            {
+                SetStatus("debugE");
+                return;
+            }
         }
 
     ////
@@ -78,8 +87,12 @@ void SetStatus(string? statusP)
     status = statusP;
     switch (status)
     {
-        case "debug":
-            Debug.WriteLine("Set debug mode");
+        case "debugB":
+            Debug.WriteLine("Set debug breakpoint mode");
+            d.SetLightColor(0, 100);
+            break;
+        case "debugE":
+            Debug.WriteLine("Set debug exec mode");
             d.SetLightColor(20, 100);
             break;
         case "notify":
