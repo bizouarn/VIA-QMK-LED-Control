@@ -8,7 +8,7 @@ const int TIMER_INTERVAL = 1000; // 1 second
 
 // GET Keyboard
 var d = new Keyboard();
-string status = "?";
+var status = "?";
 
 // Win API
 var listener = UserNotificationListener.Current;
@@ -18,7 +18,15 @@ var listener = UserNotificationListener.Current;
 ////
 while (true)
 {
-    await ProcessCheck();
+    try
+    {
+        await ProcessCheck();
+    }
+    catch (Exception e)
+    {
+        Debug.WriteLine(e);
+        throw;
+    }
     await Task.Delay(TIMER_INTERVAL);
 }
 
@@ -34,8 +42,14 @@ async Task ProcessCheck()
     // Test if process is debug
     if (processesVs.Length > 0)
         // Set light mode to rainbow
-        if (processesVs.Any(p => p.MainWindowTitle.Contains("(D") || p.MainWindowTitle.Contains("(E")))
+        if (processesVs.Any(p =>
+                p.MainWindowTitle.Contains("visual studio", StringComparison.OrdinalIgnoreCase) &&
+                (p.MainWindowTitle.Contains("(D") || p.MainWindowTitle.Contains("(E") ||
+                 p.MainWindowTitle.Contains("(É"))))
+        {
             SetStatus("debug");
+            return;
+        }
 
     ////
     // Check iƒ Windows notification
@@ -45,11 +59,11 @@ async Task ProcessCheck()
     {
         var current = DateTime.Now;
         var nDate = _.CreationTime;
-        if (nDate.Day == current.Day && nDate.Hour == current.Hour)
-        {
-            var diff = current.Subtract(nDate.DateTime);
-            if (diff.TotalSeconds < 60) SetStatus("notif");
-        }
+        var diff = current.Subtract(nDate.DateTime);
+        if (diff.TotalSeconds > 60)
+            continue;
+        SetStatus("notify");
+        return;
     }
 
     ////
@@ -68,7 +82,7 @@ void SetStatus(string? statusP)
             Debug.WriteLine("Set debug mode");
             d.SetLightColor(20, 100);
             break;
-        case "notif":
+        case "notify":
             Debug.WriteLine("Set notification mode");
             d.SetLightColor(207, 100);
             break;
