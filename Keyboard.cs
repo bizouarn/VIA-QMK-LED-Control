@@ -24,7 +24,7 @@ internal class Keyboard
     {
         Write(new byte[]
         {
-            0x00, 0x07, (byte) LigthControl.IdQmkRgblightEffect, (byte) mode
+            0x00, 0x07, (byte) LightControl.IdQmkRgbLightEffect, (byte) mode
         });
     }
 
@@ -33,7 +33,7 @@ internal class Keyboard
         var brightness = (byte) (percent * 2.55);
         Write(new byte[]
         {
-            0x00, 0x07, (byte) LigthControl.IdQmkRgblightBrightness, brightness
+            0x00, 0x07, (byte) LightControl.IdQmkRgbLightBrightness, brightness
         });
     }
 
@@ -43,7 +43,7 @@ internal class Keyboard
         var speed = (byte) (percent * 2.55);
         Write(new byte[]
         {
-            0x00, 0x07, (byte) LigthControl.IdQmkRgblightEffectSpeed, speed
+            0x00, 0x07, (byte) LightControl.IdQmkRgbLightEffectSpeed, speed
         });
     }
 
@@ -56,7 +56,7 @@ internal class Keyboard
         SetLightBrightness(l);
         Write(new byte[]
         {
-            0x00, 0x07, (byte) LigthControl.IdQmkRgblightColor, h, s
+            0x00, 0x07, (byte) LightControl.IdQmkRgbLightColor, h, s
         });
     }
 
@@ -66,7 +66,7 @@ internal class Keyboard
         var speed = (byte) (percent * 2.55);
         Write(new byte[]
         {
-            0x00, 0x07, (byte) LigthControl.IdQmkBacklightBrightness, speed
+            0x00, 0x07, (byte) LightControl.IdQmkBackLightBrightness, speed
         });
     }
 
@@ -75,7 +75,7 @@ internal class Keyboard
     {
         Write(new byte[]
         {
-            0x00, 0x07, (byte) LigthControl.IdQmkBacklightEffect, (byte) mode
+            0x00, 0x07, (byte) LightControl.IdQmkBackLightEffect, (byte) mode
         });
     }
 }
