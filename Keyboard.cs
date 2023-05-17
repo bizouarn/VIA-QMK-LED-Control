@@ -15,9 +15,13 @@ internal class Keyboard
     private void Write(byte[] data)
     {
         // complete data to byte[32]
-        var bytes = new byte[32];
-        foreach (var (b, i) in data.Select((b, i) => (b, i))) bytes[i] = b;
-        foreach (var device in _devices) device.Write(bytes);
+        byte[] bytes = new byte[32];
+        Buffer.BlockCopy(data, 0, bytes, 0, Math.Min(data.Length, bytes.Length));
+        //send data
+        foreach (var device in _devices)
+        {
+            device.Write(bytes);
+        }
     }
 
     public void SetLightMode(LightMode mode)
