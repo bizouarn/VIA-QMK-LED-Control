@@ -90,14 +90,17 @@ void SetStatus(string? statusP)
         case "debugB":
             Debug.WriteLine("Set debug breakpoint mode");
             d.SetLightColor(0, 100);
+            d.SetLightMode(LightMode.Breathing3);
             break;
         case "debugE":
             Debug.WriteLine("Set debug exec mode");
             d.SetLightColor(20, 100);
+            d.SetLightMode(LightMode.Solid);
             break;
         case "notify":
             Debug.WriteLine("Set notification mode");
             d.SetLightColor(207, 100);
+            d.SetLightMode(LightMode.Snake1);
             break;
         default:
             Debug.WriteLine("Set normal mode");
