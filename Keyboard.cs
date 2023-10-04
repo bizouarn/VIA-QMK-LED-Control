@@ -7,9 +7,9 @@ internal class Keyboard
 {
     private readonly List<HidDevice> _devices;
 
-    public Keyboard()
+    public Keyboard(string filter)
     {
-        _devices = HidDevices.Enumerate().Where(x => x.DevicePath.Contains("vid_feed")).ToList();
+        _devices = HidDevices.Enumerate().Where(x => x.DevicePath.Contains(filter)).ToList();
     }
 
     private void Write(byte[] data)

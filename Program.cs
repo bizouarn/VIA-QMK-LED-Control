@@ -7,7 +7,7 @@ using TheKey_v2.Enum;
 const int TIMER_INTERVAL = 1000; // 1 second
 
 // GET Keyboard
-var d = new Keyboard();
+var d = new Keyboard("vid_359b");
 var status = "?";
 
 // Win API
