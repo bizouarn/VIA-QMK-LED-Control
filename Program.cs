@@ -100,7 +100,7 @@ void SetStatus(string? statusP)
         case "notify":
             Debug.WriteLine("Set notification mode");
             d.SetLightColor(207, 100);
-            d.SetLightMode(LightMode.Snake1);
+            d.SetLightMode(LightMode.RainbowMood1);
             break;
         default:
             Debug.WriteLine("Set normal mode");
