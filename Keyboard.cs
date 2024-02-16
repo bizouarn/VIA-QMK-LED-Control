@@ -28,7 +28,7 @@ internal class Keyboard
         ]);
     }
 
-    public void SetLightBrightness(int percent)
+    public void SetLightBrightness(byte percent)
     {
         var brightness = (byte) (percent * 2.55);
         Write([
@@ -37,7 +37,7 @@ internal class Keyboard
     }
 
     // NOT TESTED
-    public void SetLightModeSpeed(int percent)
+    public void SetLightModeSpeed(byte percent)
     {
         var speed = (byte) (percent * 2.55);
         Write([
@@ -46,7 +46,7 @@ internal class Keyboard
     }
 
     // Note color is in HSL format
-    public void SetLightColor(int hue, int saturation, int light = 100)
+    public void SetLightColor(byte hue, byte saturation, byte light = 100)
     {
         var h = (byte) (hue * 100 / 360 * 2.55);
         var s = (byte) (saturation * 2.55);
@@ -58,7 +58,7 @@ internal class Keyboard
     }
 
     // NOT TESTED
-    public void SetBackLightModeSpeed(int percent)
+    public void SetBackLightModeSpeed(byte percent)
     {
         var speed = (byte) (percent * 2.55);
         Write([
@@ -67,7 +67,7 @@ internal class Keyboard
     }
 
     // NOT TESTED
-    public void SetBackLightMode(int mode)
+    public void SetBackLightMode(byte mode)
     {
         Write([
             0x00, 0x07, (byte) LightControl.IdQmkBackLightEffect, (byte) mode

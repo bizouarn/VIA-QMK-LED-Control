@@ -1,10 +1,10 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Windows.UI.Notifications;
 using Windows.UI.Notifications.Management;
 using TheKey_v2;
 using TheKey_v2.Enum;
 
-const int TIMER_INTERVAL = 1000; // 1 second
+const short TIMER_INTERVAL = 1000; // 1 second
 
 // GET Keyboard
 var d = new Keyboard("vid_359b");
