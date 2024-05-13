@@ -70,7 +70,7 @@ internal class Keyboard
     public void SetBackLightMode(byte mode)
     {
         Write([
-            0x00, 0x07, (byte) LightControl.IdQmkBackLightEffect, (byte) mode
+            0x00, 0x07, (byte) LightControl.IdQmkBackLightEffect, mode
         ]);
     }
 }
