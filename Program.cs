@@ -63,14 +63,11 @@ async Task ProcessCheck()
     ////
     // Check iƒ Windows notification
     ////
-    var notification = await listener.GetNotificationsAsync(NotificationKinds.Toast);
-    foreach (var _ in notification)
+    var notifications = await listener.GetNotificationsAsync(NotificationKinds.Toast);
+    var now = DateTime.Now;
+    var recentNotification = notifications.FirstOrDefault(n => (now - n.CreationTime.DateTime).TotalSeconds <= 60);
+    if (recentNotification != null)
     {
-        var current = DateTime.Now;
-        var nDate = _.CreationTime;
-        var diff = current.Subtract(nDate.DateTime);
-        if (diff.TotalSeconds > 60)
-            continue;
         SetStatus("notify");
         return;
     }
