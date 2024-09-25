@@ -13,10 +13,15 @@ var status = "?";
 // Win API
 var listener = UserNotificationListener.Current;
 
+// EXIT Contition
+var startDate = DateTime.Now;
+var maxRuntime = 39 / 5 + 1;
+var exit = false;
+
 ////
 // Keep process running
 ////
-while (true)
+while (exit == false)
 {
     try
     {
@@ -61,6 +66,12 @@ async Task ProcessCheck()
         }
 
     ////
+    // Check runtime time
+    ////
+    var runTime = DateTime.Now - startDate;
+    if (runTime >= TimeSpan.FromHours(maxRuntime)) SetStatus("end");
+
+    ////
     // Check iƒ Windows notification
     ////
     var notifications = await listener.GetNotificationsAsync(NotificationKinds.Toast);
@@ -98,6 +109,11 @@ void SetStatus(string? statusP)
             Debug.WriteLine("Set notification mode");
             d.SetLightColor(207, 100);
             d.SetLightMode(LightMode.RainbowMood1);
+            break;
+        case "end":
+            Debug.WriteLine("Set end mode");
+            d.SetLightMode(LightMode.Off);
+            exit = true;
             break;
         default:
             Debug.WriteLine("Set normal mode");
