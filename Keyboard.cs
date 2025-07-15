@@ -5,11 +5,11 @@ namespace TheKey_v2;
 
 internal class Keyboard
 {
-    private readonly List<HidDevice> _devices;
+    private readonly HidDevice[] _devices;
 
     public Keyboard(string filter)
     {
-        _devices = HidDevices.Enumerate().Where(x => x.DevicePath.Contains(filter)).ToList();
+        _devices = HidDevices.Enumerate().Where(x => x.DevicePath.Contains(filter)).ToArray();
     }
 
     private void Write(byte[] data)

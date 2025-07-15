@@ -13,7 +13,7 @@ var status = "?";
 // Win API
 var listener = UserNotificationListener.Current;
 
-// EXIT Contition
+// EXIT Condition
 var startDate = DateTime.Now;
 var maxRuntime = 39 / 5 + 1;
 var exit = false;
